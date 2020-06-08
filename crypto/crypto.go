@@ -127,3 +127,21 @@ func DecryptRemovePCKCS5Pad(m []byte) ([]byte, error) {
 	}
 	return m, nil
 }
+
+func RemovePCKCS5Pad(s string) (string, error) {
+	m := []byte(s)
+	p := int(m[len(m)-1])
+	if p > 16 || p < 1 {
+		return "", ErrInvalidPad
+	}
+	// Check the pad
+	j := p
+	for j > 0 {
+		if m[len(m)-1] != byte(p) {
+			return "", ErrInvalidPad
+		}
+		m = m[0 : len(m)-1]
+		j--
+	}
+	return string(m), nil
+}

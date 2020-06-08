@@ -60,7 +60,6 @@ func Decrypt(c []byte, q Poracle, l log.Logger) (string, error) {
 // querier. The block length it uses is defined in the var CipherBlockLen. It
 // uses the logger l to write info about the status of the attack.
 func Encrypt(txt string, q Poracle, l log.Logger) ([]byte, error) {
-
 	ctext := crypto.PCKCS5Pad([]byte(txt))
 	n := len(ctext) / CipherBlockLen
 
