@@ -58,7 +58,8 @@ func CBCEncrypt(hiv, key, msg string) (string, error) {
 }
 
 // CBCDecrypt accepts a key and ciphertext in the form: iv||cypher returns a
-// message. The ciphertext ix hex encoded.
+// message. The ciphertext is hex encoded. WARNING: This function is vulnerable
+// to padding oracle attacks and should only be used for test pourposes.
 func CBCDecrypt(key, ciphertext string) (string, error) {
 	d, err := hex.DecodeString(ciphertext)
 	if err != nil {
