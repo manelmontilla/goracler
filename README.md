@@ -1,4 +1,5 @@
-# GORACLER 
+[![manelmontilla](https://circleci.com/gh/manelmontilla/goracler.svg?style=svg)](https://app.circleci.com/pipelines/github/manelmontilla/goracler)
+# GORACLER
 
 Goracle is a go library that helps performing [padding
 oracle](https://en.wikipedia.org/wiki/Padding_oracle_attack) attacks. The oracle
