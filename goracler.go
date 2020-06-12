@@ -30,8 +30,8 @@ type Poracle interface {
 }
 
 // Decrypt performs a decrypt attack using the given ciphertext and oracle
-// querier. The block length it uses is defined in the var CipherBlockLen. It
-// uses the logger l to write info about the status of the attack.
+// querier. The block length used is defined in the module var CipherBlockLen.
+// It uses the passed in logger to write info about the status of the attack.
 func Decrypt(c []byte, q Poracle, l log.Logger) (string, error) {
 	n := len(c) / CipherBlockLen
 	if n < 2 {
@@ -59,10 +59,9 @@ func Decrypt(c []byte, q Poracle, l log.Logger) (string, error) {
 // Encrypt performs an encrypt attack using the given ciphertext and oracle
 // querier. The block length it uses is defined in the var CipherBlockLen. It
 // uses the logger l to write info about the status of the attack.
-func Encrypt(txt string, q Poracle, l log.Logger) ([]byte, error) {
-
-	ctext := crypto.PCKCS5Pad([]byte(txt))
-	n := len(ctext) / CipherBlockLen
+func Encrypt(payload []byte, q Poracle, l log.Logger) ([]byte, error) {
+	payload = crypto.PCKCS5Pad(payload)
+	n := len(payload) / CipherBlockLen
 
 	// The clear text have the same length as the cyphertext - 1
 	// (the IV).
@@ -81,7 +80,7 @@ func Encrypt(txt string, q Poracle, l log.Logger) ([]byte, error) {
 		}
 		mi := di
 		im = append(im, mi...)
-		ti := ctext[CipherBlockLen*i : (CipherBlockLen*i)+CipherBlockLen]
+		ti := payload[CipherBlockLen*i : (CipherBlockLen*i)+CipherBlockLen]
 		c1 = crypto.BlockXOR(ti, mi)
 		c = append(c1, c...)
 	}
