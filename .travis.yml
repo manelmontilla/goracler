@@ -1,0 +1,8 @@
+dist: trusty
+language: go
+go:
+  - 1.13.3
+gobuild_args: -a -tags netgo -ldflags "-w -X main.version=${TRAVIS_COMMIT}"
+go_import_path: github.com/manelmontilla/goracler
+script:
+  - go test -short -race -v
