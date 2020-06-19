@@ -32,7 +32,7 @@ type Poracle interface {
 // Decrypt performs a decrypt attack using the given ciphertext and oracle
 // querier. The block length used is defined in the module var CipherBlockLen.
 // It uses the passed in logger to write info about the status of the attack.
-func Decrypt(c []byte, q Poracle, l log.Logger) (string, error) {
+func Decrypt(c []byte, q Poracle, l *log.Logger) (string, error) {
 	n := len(c) / CipherBlockLen
 	if n < 2 {
 		return "", ErrInvalidCiphertext
@@ -59,7 +59,7 @@ func Decrypt(c []byte, q Poracle, l log.Logger) (string, error) {
 // Encrypt performs an encrypt attack using the given ciphertext and oracle
 // querier. The block length it uses is defined in the var CipherBlockLen. It
 // uses the logger l to write info about the status of the attack.
-func Encrypt(payload []byte, q Poracle, l log.Logger) ([]byte, error) {
+func Encrypt(payload []byte, q Poracle, l *log.Logger) ([]byte, error) {
 	payload = crypto.PCKCS5Pad(payload)
 	n := len(payload) / CipherBlockLen
 
@@ -87,7 +87,7 @@ func Encrypt(payload []byte, q Poracle, l log.Logger) ([]byte, error) {
 	return c, nil
 }
 
-func decryptBlock(prev, current []byte, q Poracle, l log.Logger) ([]byte, error) {
+func decryptBlock(prev, current []byte, q Poracle, l *log.Logger) ([]byte, error) {
 	var mi = make([]byte, CipherBlockLen)
 	for p := CipherBlockLen - 1; p >= 0; p-- {
 		// Generate a channel with values from 0 to 255.
@@ -147,7 +147,7 @@ type oracleWorker struct {
 	p             int
 	read          <-chan byte
 	done          chan<- checkValueRes
-	l             log.Logger
+	l             *log.Logger
 }
 
 func (o oracleWorker) checkValuePad() {
