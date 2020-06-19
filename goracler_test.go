@@ -46,7 +46,7 @@ func Test_decryptBlock(t *testing.T) {
 	}
 	var l log.Logger
 	l.SetOutput(ioutil.Discard)
-	m, err := decryptBlock(c[0:CipherBlockLen], c[CipherBlockLen:CipherBlockLen*2], oracle, l)
+	m, err := decryptBlock(c[0:CipherBlockLen], c[CipherBlockLen:CipherBlockLen*2], oracle, &l)
 	if err != nil {
 		t.Error(err)
 		t.FailNow()
@@ -65,7 +65,7 @@ func TestDecrypt(t *testing.T) {
 	type args struct {
 		c []byte
 		q Poracle
-		l log.Logger
+		l *log.Logger
 	}
 	tests := []struct {
 		name        string
@@ -94,7 +94,7 @@ func TestDecrypt(t *testing.T) {
 				}
 				var l log.Logger
 				l.SetOutput(ioutil.Discard)
-				return args{c, q, l}
+				return args{c, q, &l}
 			},
 			want: "Somewhere in la Mancha, in a place whose name",
 		},
@@ -123,7 +123,7 @@ func TestEncrypt(t *testing.T) {
 	type args struct {
 		p []byte
 		q Poracle
-		l log.Logger
+		l *log.Logger
 	}
 	tests := []struct {
 		name        string
@@ -143,7 +143,7 @@ func TestEncrypt(t *testing.T) {
 				matter of time and the time is something many people has`
 				var l log.Logger
 				l.SetOutput(ioutil.Discard)
-				return args{[]byte(msg), oracle, l}
+				return args{[]byte(msg), oracle, &l}
 			},
 			wantChecker: func(c []byte) error {
 				ctxt := hex.EncodeToString(c)
